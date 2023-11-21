@@ -3,6 +3,8 @@
 save_dir=$(date +"enum4subs_%m%d%y%H%M")
 list_name=""
 domain_name=""
+notify_dir="notify"
+notify_provider_config=""
 #should_sort=false
 should_enumerate=false
 do_notify=false
@@ -28,7 +30,7 @@ function create_save_directory {
 function send_notify {
   if [ "do_notify " == true ]; then
     if [ ! -d "notify" ]; then
-    mkdir "notify"
+    mkdir "${notify_dir}"
 
 }
 function print_default_message {
@@ -222,6 +224,7 @@ function domain_enum {
   fi
   echo -e "\n${b_color_yellow}-- Finding Subdomains for [ ${b_color_purple}${domain} ${b_color_yellow}]\n${normal}"
   curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$domain/${domain}-crtsh.txt"
+  #Incase jq fail it will send onother request and parse the subdomains manually
   curl -s "https://crt.sh/?q=%.$domain&output=json" | grep -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep "$domain" | sort -u | tee "$save_dir/$domain/${domain}-crtsh-02.txt"
   #assetfinder --subs-only "$domain" | grep -Ev " |\@|\/" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | tee "$save_dir/$domain/${domain}-assetfinder.txt"
   subfinder -all -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder.txt"
@@ -251,6 +254,7 @@ do
       #should_sort=true
       ;;
     n)
+      notify_provider_config="${OPTARG}"
       do_notify=true
       ;;  
     h)
