@@ -5,6 +5,7 @@ list_name=""
 domain_name=""
 #should_sort=false
 should_enumerate=false
+do_notify=false
 #domain_dir=""
 #sorted_dir="sorted-${save_dir}"
 sorted=$(date +"sorted_%m%d%y%H%M")
@@ -24,13 +25,18 @@ function create_save_directory {
     fi
   fi
 }
+function send_notify {
+  if [ "do_notify " == true ]; then
+    if [ ! -d "notify" ]; then
+    mkdir "notify"
 
+}
 function print_default_message {
   echo -e """
   ${b_color_green}-h ) ${normal} Show help.
   ${b_color_green}-d ) ${normal} Finding single domain of a target.
   ${b_color_green}-l ) ${normal} Finding domain on a list.
-  ${b_color_green}-n ) ${normal} Notify.
+  ${b_color_green}-n ) ${normal} Send Notification using notify tool please provide (provider-config.yaml) 
   """
 }
 function probing_subs {
@@ -40,7 +46,7 @@ function probing_subs {
 
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
 
-  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
+  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 80 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
   result_200=$(grep "32m200" ${sorted}/"enum4subs_allsubs_httpx.txt")
@@ -157,7 +163,7 @@ function probing_subs {
   if [ -n "$ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address ${normal}\n"
     first_ip=$(grep -o "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/"enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/enum4subs_allsubs_ip_address.txt")
-    echo "${first_ip}"
+    #echo "${first_ip}"
   else
     echo ""
   fi 
@@ -226,7 +232,7 @@ function domain_enum {
   combine_sort
 }
 
-while getopts "shnd:l:" opt
+while getopts "shd:l:n:" opt
 do
   case $opt in
     d)
@@ -245,7 +251,7 @@ do
       #should_sort=true
       ;;
     n)
-      echo ''
+      do_notify=true
       ;;  
     h)
       print_default_message
