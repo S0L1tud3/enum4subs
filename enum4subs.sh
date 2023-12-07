@@ -56,6 +56,9 @@ function probing_subs {
     echo -e "\n${b_color_purple}-- Status Code ${b_color_green}[200] ${normal}\n"
     first_field_1=$(grep "32m200" ${sorted}/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/enum4subs_allsubs_status_200.txt")
     echo "${first_field_1}"
+    #Test for now do notify
+    echo "--[200]--">"${sorted}/notify-200.txt";cat "${sorted}/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
+    notify -i "${sorted}/notify-200.txt" -pc "${notify_provider_config}" -bulk -silent >>/dev/null
   else
     echo ""
   fi   
