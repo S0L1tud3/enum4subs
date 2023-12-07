@@ -27,12 +27,12 @@ function create_save_directory {
     fi
   fi
 }
-function send_notify {
-  if [ "do_notify " == true ]; then
-    if [ ! -d "notify" ]; then
-    mkdir "${notify_dir}"
+# function send_notify {
+#   if [ "do_notify " == true ]; then
+#     if [ ! -d "notify" ]; then
+#     mkdir "${notify_dir}"
 
-}
+# }
 function print_default_message {
   echo -e """
   ${b_color_green}-h ) ${normal} Show help.
@@ -258,7 +258,7 @@ do
       ;;
     n)
       notify_provider_config="${OPTARG}"
-      do_notify=true
+      #do_notify=true
       ;;  
     h)
       print_default_message
