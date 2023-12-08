@@ -47,7 +47,7 @@ function probing_subs {
   #dnsx -silent -l "${sorted}/enum4subs_allsubs.txt" -o "${sorted}/enum4subs_allsubs_dnsx_resolve.txt"
 
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
-
+  local notify_config="$notify_provider_config"
   httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 80 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
@@ -58,7 +58,7 @@ function probing_subs {
     echo "${first_field_1}"
     #Test for now do notify
     echo "--[200]--">"${sorted}/notify-200.txt";cat "${sorted}/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
-    notify -i "${sorted}/notify-200.txt" -pc ${notify_provider_config} -bulk -silent >>/dev/null
+    notify -i "${sorted}/notify-200.txt" -pc ${notify_config} -bulk -silent >>/dev/null
   else
     echo ""
   fi   
