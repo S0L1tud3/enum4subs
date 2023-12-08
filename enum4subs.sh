@@ -58,7 +58,7 @@ function probing_subs {
     echo "${first_field_1}"
     #Test for now do notify
     echo "--[200]--">"${sorted}/notify-200.txt";cat "${sorted}/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
-    notify -i "${sorted}/notify-200.txt" -pc "${notify_provider_config}" -bulk -silent >>/dev/null
+    notify -i "${sorted}/notify-200.txt" -pc ${notify_provider_config} -bulk -silent >>/dev/null
   else
     echo ""
   fi   
