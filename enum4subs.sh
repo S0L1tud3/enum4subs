@@ -4,7 +4,7 @@ save_dir=$(date +"enum4subs_%m%d%y%H%M")
 list_name=""
 domain_name=""
 notify_dir="notify"
-notify_provider_config=""
+notify_config=""
 #should_sort=false
 should_enumerate=false
 do_notify=false
@@ -39,15 +39,16 @@ function print_default_message {
   ${b_color_green}-d ) ${normal} Finding single domain of a target.
   ${b_color_green}-l ) ${normal} Finding domain on a list.
   ${b_color_green}-n ) ${normal} Send Notification using notify tool please provide (provider-config.yaml) 
+  
   """
 }
 function probing_subs {
   #echo -e "${b_color_purple}-- Resolving All Sorted Subdomains..${normal}\n"
 
   #dnsx -silent -l "${sorted}/enum4subs_allsubs.txt" -o "${sorted}/enum4subs_allsubs_dnsx_resolve.txt"
-  local notify_config="$notify_provider_config"
+  local notify="$notify_config"
+
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
-  local notify_config="$notify_provider_config"
   httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 80 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
@@ -57,12 +58,10 @@ function probing_subs {
     first_field_1=$(grep "32m200" ${sorted}/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/enum4subs_allsubs_status_200.txt")
     echo "${first_field_1}"
     #Test for now do notify
-    echo "--[200]--">"${sorted}/notify-200.txt";cat "${sorted}/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
-<<<<<<< Updated upstream
-    notify -i "${sorted}/notify-200.txt" -pc ${notify_config} -bulk -silent >>/dev/null
-=======
-    notify -i "${sorted}/notify-200.txt" -pc "$notify_config" -bulk -silent >>/dev/null
->>>>>>> Stashed changes
+    echo "\n\n==== [200 OK] ====\n\n">"${sorted}/notify-200.txt";cat "${sorted}/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
+
+    notify -i "${sorted}/notify-200.txt" -pc "${notify}" -bulk -silent >>/dev/null
+
   else
     echo ""
   fi   
@@ -242,7 +241,7 @@ function domain_enum {
   combine_sort
 }
 
-while getopts "shd:l:n:" opt
+while getopts "hd:l:n:" opt
 do
   case $opt in
     d)
@@ -257,11 +256,8 @@ do
       create_save_directory
       list_enum
       ;;
-    s)
-      #should_sort=true
-      ;;
     n)
-      notify_provider_config="${OPTARG}"
+      notify_config="${OPTARG}"
       #do_notify=true
       ;;  
     h)
