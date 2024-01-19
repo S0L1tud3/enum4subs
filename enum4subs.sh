@@ -46,6 +46,7 @@ function probing_subs {
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
   ### Test for Now #########
   cat "${sorted}/enum4subs_allsubs.txt" | httprobe -c 80 | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt"
+  #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
   httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 80 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
@@ -192,6 +193,7 @@ function combine_sort {
       mkdir "$sorted"
       mkdir "$sorted/httpx"
       mkdir "$sorted/httprobe"
+      mkdir "$sorted/httprobe/nmap"
       cat enum4subs_*/*/*".txt" | sort -u >> "${sorted}/enum4subs_allsubs.txt"
       echo -e "\n${b_color_green}Sorting Complete.!!${normal}\n"
       echo -e "\n${b_color_purple}Sorted output are save in ${sorted} folder.!!${normal}\n"
