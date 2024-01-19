@@ -245,7 +245,7 @@ function domain_enum {
   python3 /opt/tools/python-permute/sub-permute.py -d "$domain" -o "$save_dir/$domain/${domain}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
   combine_sort
 }
-#
+##
 while getopts "hd:l:n:" opt
 do
   case $opt in
