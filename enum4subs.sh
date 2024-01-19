@@ -27,12 +27,7 @@ function create_save_directory {
     fi
   fi
 }
-# function send_notify {
-#   if [ "do_notify " == true ]; then
-#     if [ ! -d "notify" ]; then
-#     mkdir "${notify_dir}"
 
-# }
 function print_default_message {
   echo -e """
   ${b_color_green}-h ) ${normal} Show help.
@@ -49,6 +44,9 @@ function probing_subs {
   local notify="$notify_config"
 
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
+  ### Test for Now #########
+  cat "${sorted}/enum4subs_allsubs.txt" | httprobe -c 80 | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt"
+  ##########################
   httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 80 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
@@ -60,7 +58,9 @@ function probing_subs {
     #Test for now do notify
     echo "\n\n==== [200 OK] ====\n\n">"${sorted}/notify-200.txt";cat "${sorted}/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
 
+    if [ "$do_notify" = true]; then
     notify -i "${sorted}/notify-200.txt" -pc "${notify}" -bulk -silent >>/dev/null
+    fi
 
   else
     echo ""
@@ -190,6 +190,8 @@ function combine_sort {
   echo -e "${b_color_purple}-- Sorting Subdomains.!!${normal}"
     if [ ! -d "$sorted" ]; then
       mkdir "$sorted"
+      mkdir "$sorted/httpx"
+      mkdir "$sorted/httprobe"
       cat enum4subs_*/*/*".txt" | sort -u >> "${sorted}/enum4subs_allsubs.txt"
       echo -e "\n${b_color_green}Sorting Complete.!!${normal}\n"
       echo -e "\n${b_color_purple}Sorted output are save in ${sorted} folder.!!${normal}\n"
@@ -258,7 +260,7 @@ do
       ;;
     n)
       notify_config="${OPTARG}"
-      #do_notify=true
+      do_notify=true
       ;;  
     h)
       print_default_message
