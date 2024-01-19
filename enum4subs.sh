@@ -45,11 +45,11 @@ function probing_subs {
 
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
   ### Test for Now #########
-  cat "${sorted}/enum4subs_allsubs.txt" | httprobe -c 80 >> "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt"
+  cat "${sorted}/enum4subs_allsubs.txt" | httprobe -c 50 -t 5000 >> "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt"
   cat "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt"
   #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
-  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 80 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
+  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 60 -ip -o "${sorted}/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
   result_200=$(grep "32m200" ${sorted}/"enum4subs_allsubs_httpx.txt")
