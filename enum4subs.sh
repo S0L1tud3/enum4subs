@@ -52,10 +52,10 @@ function probing_subs {
   httpx -l "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 60 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
-  result_200=$(grep "32m200" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_200=$(grep "32m200" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_200" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_green}[200] ${normal}\n"
-    first_field_1=$(grep "32m200" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_200.txt")
+    first_field_1=$(grep "32m200" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_200.txt")
     echo "${first_field_1}"
     #Test for now do notify
     echo "\n\n==== [200 OK] ====\n\n">"${sorted}/notify-200.txt";cat "${sorted}/httpx/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
@@ -67,121 +67,121 @@ function probing_subs {
   else
     echo ""
   fi   
-  result_301=$(grep "33m301" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_301=$(grep "33m301" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_301" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_cyan}[301] ${normal}\n"
-    first_field_2=$(grep "33m301" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_301.txt")
+    first_field_2=$(grep "33m301" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_301.txt")
     echo "${first_field_2}"
   else
     echo ""
   fi   
 
-  result_302=$(grep "33m302" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_302=$(grep "33m302" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_302" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_cyan}[302] ${normal}\n"
-    first_field_3=$(grep "33m302" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_302.txt")
+    first_field_3=$(grep "33m302" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_302.txt")
     echo "${first_field_3}"
   else
     echo ""
   fi  
 
-  result_303=$(grep "33m303" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_303=$(grep "33m303" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_303" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_cyan}[303] ${normal}\n"
-    first_field_4=$(grep "33m303" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_303.txt")
+    first_field_4=$(grep "33m303" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_303.txt")
     echo "${first_field_4}"
   else
     echo ""
   fi
 
-  result_307=$(grep "33m307" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_307=$(grep "33m307" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_307" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_cyan}[307] ${normal}\n"
-    first_field_4=$(grep "33m307" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_307.txt")
+    first_field_4=$(grep "33m307" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_307.txt")
     echo "${first_field_4}"
   else
     echo ""    
   fi  
-  result_401=$(grep "31m401"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_401=$(grep "31m401"  ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_401" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_yellow}[401] ${normal}\n"
-    first_field_5=$(grep "31m401"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_401.txt")
+    first_field_5=$(grep "31m401"  ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_401.txt")
     echo "${first_field_5}"
   else
     echo ""
   fi    
 
-  result_403=$(grep "31m403"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_403=$(grep "31m403"  ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_403" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_purple}[403] ${normal}\n"
-    first_field_6=$(grep "31m403"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_403.txt")
+    first_field_6=$(grep "31m403"  ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_403.txt")
     echo "${first_field_6}"
   else
     echo ""
   fi  
 
-  result_404=$(grep "31m404"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_404=$(grep "31m404"  ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_404" ]; then
   echo -e "\n${b_color_purple}-- Status Code ${b_color_blue}[404] ${normal}\n"
-    first_field_7=$(grep "31m404"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_404.txt")
+    first_field_7=$(grep "31m404"  ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_404.txt")
   echo "${first_field_7}"
   else
     echo ""
   fi  
-  result_500=$(grep "33m500" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_500=$(grep "33m500" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_500" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_red}[500] ${normal}\n"
-    first_field_8=$(grep "33m500" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_500.txt")
+    first_field_8=$(grep "33m500" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_500.txt")
     echo "${first_field_8}"
   else
     echo ""
   fi   
-  result_501=$(grep "33m501" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_501=$(grep "33m501" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_501" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_red}[501] ${normal}\n"
-    first_field_9=$(grep "33m501" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_501.txt")
+    first_field_9=$(grep "33m501" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_501.txt")
     echo "${first_field_9}"
   else
     echo ""
   fi   
-  result_502=$(grep "33m502" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_502=$(grep "33m502" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_502" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_red}[502] ${normal}\n"
-    first_field_10=$(grep "33m502" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a  "${sorted}/httpx/enum4subs_allsubs_status_502.txt")
+    first_field_10=$(grep "33m502" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a  "${sorted}/httpx/enum4subs_allsubs_status_502.txt")
     echo "${first_field_10}"
   else
     echo ""
   fi  
 
-  result_503=$(grep "33m503" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  result_503=$(grep "33m503" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$result_503" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_red}[503] ${normal}\n"
-    first_field_10=$(grep "33m503" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a  "${sorted}/httpx/enum4subs_allsubs_status_503.txt")
+    first_field_10=$(grep "33m503" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt"  | tee -a  "${sorted}/httpx/enum4subs_allsubs_status_503.txt")
     echo "${first_field_10}"
   else
     echo ""
   fi  
 
-  no_status=$(grep "\[\]" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  no_status=$(grep "\[\]" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$no_status" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${normal}[ ] ${normal}\n"
     echo "$no_status"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_none.txt"
   else
     echo ""
   fi 
-  ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
+  ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address ${normal}\n"
-    first_ip=$(grep -o "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/httpx/"enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/httpx/enum4subs_allsubs_ip_address.txt")
+    first_ip=$(grep -o "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/httpx/enum4subs_allsubs_ip_address.txt")
     #echo "${first_ip}"
   else
     echo ""
   fi 
 
-  probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/httpx/"enum4subs_allsubs_ip_address.txt")
+  probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/"httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
-    httpx -silent -title -sc -cl -td -cname -probe -l ${sorted}/httpx/"enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
+    httpx -silent -title -sc -cl -td -cname -probe -l ${sorted}/"httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
     echo -e "\n${b_color_green}Done!! ${normal}\n"
   else
     echo ""
