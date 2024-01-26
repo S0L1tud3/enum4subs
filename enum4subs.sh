@@ -45,7 +45,7 @@ function probing_subs {
 
   echo -e "${b_color_purple}-- Probing All Sorted Subdomains..${normal}\n"
   ### Test for Now #########
-  cat "${sorted}/httpx/enum4subs_allsubs.txt" | httprobe -c 50 -t 5000 >> "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt"
+  cat "${sorted}/enum4subs_allsubs.txt" | httprobe -c 50 -t 5000 >> "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt"
   cat "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt"
   #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
@@ -181,7 +181,7 @@ function probing_subs {
   probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/httpx/"enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
-    httpx -silent -title -sc -cl -td -cname -probe -l ${sorted}/"enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
+    httpx -silent -title -sc -cl -td -cname -probe -l ${sorted}/httpx/"enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
     echo -e "\n${b_color_green}Done!! ${normal}\n"
   else
     echo ""
