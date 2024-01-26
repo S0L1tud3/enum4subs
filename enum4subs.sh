@@ -60,7 +60,7 @@ function probing_subs {
     #Test for now do notify
     echo "\n\n==== [200 OK] ====\n\n">"${sorted}/notify-200.txt";cat "${sorted}/httpx/enum4subs_allsubs_status_200.txt">>"${sorted}/notify-200.txt"
 
-    if [ "$do_notify" = true]; then
+    if [ "$do_notify" = true ]; then
     notify -i "${sorted}/notify-200.txt" -pc "${notify}" -bulk -silent >>/dev/null
     fi
 
