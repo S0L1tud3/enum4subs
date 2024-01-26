@@ -102,7 +102,7 @@ function probing_subs {
   else
     echo ""    
   fi  
-  result_401=$(grep "31m401"  ${sorted}/"enum4subs_allsubs_httpx.txt")
+  result_401=$(grep "31m401"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
   if [ -n "$result_401" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_yellow}[401] ${normal}\n"
     first_field_5=$(grep "31m401"  ${sorted}/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_401.txt")
@@ -111,10 +111,10 @@ function probing_subs {
     echo ""
   fi    
 
-  result_403=$(grep "31m403"  ${sorted}/"enum4subs_allsubs_httpx.txt")
+  result_403=$(grep "31m403"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt")
   if [ -n "$result_403" ]; then
     echo -e "\n${b_color_purple}-- Status Code ${b_color_purple}[403] ${normal}\n"
-    first_field_6=$(grep "31m403"  ${sorted}/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_403.txt")
+    first_field_6=$(grep "31m403"  ${sorted}/httpx/"enum4subs_allsubs_httpx.txt"  | tee -a "${sorted}/httpx/enum4subs_allsubs_status_403.txt")
     echo "${first_field_6}"
   else
     echo ""
