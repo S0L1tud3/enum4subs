@@ -214,7 +214,7 @@ function list_enum {
       curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$domain/${domain}-crtsh-02.txt"
       #assetfinder --subs-only "$domain" | grep -Ev " |\@|\/" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | tee "$save_dir/$domain/${domain}-assetfinder.txt"
       subfinder -all -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder.txt"
-      subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
+      #subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
       "/opt/tools/amass-3.23.3/amass" enum -passive  -d "$domain" -o "$save_dir/$domain/${domain}-amass.txt" -config "/opt/tools/amass-config/config.ini" -norecursive -nocolor
       #"/opt/tools/amass-3.23.3/amass" enum -brute  -d "$domain" -o "$save_dir/$domain/${domain}-amass-brute.txt" -config "/opt/tools/amass-config/config.ini" -nocolor -norecursive     
       python3 /opt/tools/python-permute/sub-permute.py -d "$domain" -o "$save_dir/$domain/${domain}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
@@ -239,7 +239,7 @@ function domain_enum {
   curl -s "https://crt.sh/?q=%.$domain&output=json" | grep -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep "$domain" | sort -u | tee "$save_dir/$domain/${domain}-crtsh-02.txt"
   #assetfinder --subs-only "$domain" | grep -Ev " |\@|\/" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | tee "$save_dir/$domain/${domain}-assetfinder.txt"
   subfinder -all -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder.txt"
-  subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
+  #subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
   "/opt/tools/amass-3.23.3/amass" enum -passive -d "$domain" -o "$save_dir/$domain/${domain}-amass.txt" -config "/opt/tools/amass-config/config.ini" -norecursive -nocolor
   #"/opt/tools/amass-3.23.3/amass" enum -brute -d "$domain" -o "$save_dir/$domain/${domain}-amass-brute.txt" -config "/opt/tools/amass-config/config.ini" -nocolor -norecursive
   python3 /opt/tools/python-permute/sub-permute.py -d "$domain" -o "$save_dir/$domain/${domain}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
