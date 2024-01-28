@@ -49,7 +49,7 @@ function probing_subs {
   cat "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt"
   #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
-  httpx -l "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -silent -td -cname -vhost -sc -title -cl -ct -t 60 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
+  httpx -l "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -silent -td -cname -vhost -sc -title -cl -ct -unsafe -fhr -t 60 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
   result_200=$(grep "32m200" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
@@ -181,7 +181,7 @@ function probing_subs {
   probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}/"httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
-    httpx -silent -title -sc -cl -td -cname -probe -l ${sorted}/"httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
+    httpx -silent -title -sc -cl -td -cname -unsafe -fhr -probe -l ${sorted}/"httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
     echo -e "\n${b_color_green}Done!! ${normal}\n"
   else
     echo ""
