@@ -49,7 +49,7 @@ function probing_subs {
   cat "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt"
   #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
-  httpx -l "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -silent -td -cname -vhost -sc -title -cl -ct -unsafe -fhr -t 60 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
+  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -vhost -sc -title -cl -ct -unsafe -fhr -t 60 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
   result_200=$(grep "32m200" ${sorted}/"httpx/enum4subs_allsubs_httpx.txt")
