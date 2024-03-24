@@ -193,9 +193,15 @@ function get_all_seed_domains {
     if [ ! -d "$save_dir/$seed_domains" ]; then
       mkdir "$seed_domains"
       cat enum4subs_*/*/*".txt" | sort -u >> "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
+      
+      #####
       #Read all subdomains from `enum4subs_raw_sub.txt` and get all seed domains and save it as `$save_dir/$seed_domains/enum4subs_seed_domains.txt`
-
+      
+      
+      #####
       #After getting all seed domains permutate it and save the output file to `$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt`
+
+      #####
       #Then call combine_sort function
       
       
