@@ -181,7 +181,7 @@ function probing_subs {
   probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
-    httpx -silent -t 200 -title -sc -cl -td -cname -fhr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
+    httpx -silent -t 200 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
     echo -e "\n${b_color_green}Done!! ${normal}\n"
   else
     echo ""
@@ -191,19 +191,20 @@ function get_all_seed_domains {
     #echo -e "${b_color_purple}-- Sorting Subdomains.!!${normal}"
     seed_domains="seed_domains"
     if [ ! -d "$save_dir/$seed_domains" ]; then
-      mkdir "$seed_domains"
+      mkdir "$save_dir/$seed_domains"
       cat enum4subs_*/*/*".txt" | sort -u >> "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
       
       #####
       #Read all subdomains from `enum4subs_raw_sub.txt` and get all seed domains and save it as `$save_dir/$seed_domains/enum4subs_seed_domains.txt`
-      
-      
+      python3 /opt/tools/get-seed-domains/get-seed-domains.py -l "$save_dir/$seed_domains/enum4subs_raw_sub.txt" -o "$save_dir/$seed_domains/enum4subs_seed_domains.txt"
+      rm -rf "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
       #####
       #After getting all seed domains permutate it and save the output file to `$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt`
+      python3 /opt/tools/python-permute/sub-permute.py -l "$save_dir/$seed_domains/enum4subs_seed_domains.txt"  -o "$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
 
       #####
       #Then call combine_sort function
-      
+      combine_sort
       
     fi
 }
@@ -240,7 +241,7 @@ function list_enum {
       python3 /opt/tools/python-permute/sub-permute.py -d "$domain" -o "$save_dir/$domain/${domain}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
       #domain_dir="$domain"
     done < "$file_name"
-    combine_sort
+    get_all_seed_domains
   else
     echo -e "\n${b_color_red}File not Exist!!${normal}\n"
   fi
@@ -263,7 +264,7 @@ function domain_enum {
   "/opt/tools/amass-3.23.3/amass" enum -passive -d "$domain" -o "$save_dir/$domain/${domain}-amass.txt" -config "/opt/tools/amass-config/config.ini" -norecursive -nocolor
   #"/opt/tools/amass-3.23.3/amass" enum -brute -d "$domain" -o "$save_dir/$domain/${domain}-amass-brute.txt" -config "/opt/tools/amass-config/config.ini" -nocolor -norecursive
   python3 /opt/tools/python-permute/sub-permute.py -d "$domain" -o "$save_dir/$domain/${domain}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
-  combine_sort
+  get_all_seed_domains
 }
 
 while getopts "hd:l:n:" opt
