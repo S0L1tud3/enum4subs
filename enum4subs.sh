@@ -200,7 +200,11 @@ function get_all_seed_domains {
       rm -rf "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
       #####
       #After getting all seed domains permutate it and save the output file to `$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt`
-      python3 /opt/tools/python-permute/sub-permute.py -l "$save_dir/$seed_domains/enum4subs_seed_domains.txt"  -o "$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
+      if [ -f "$save_dir/$seed_domains/enum4subs_seed_domains.txt" ]; then
+         for d in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");
+          do
+           python3 /opt/tools/python-permute/sub-permute.py -d "$d"  -o "$save_dir/$seed_domains/${d}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
+          done
 
       #####
       #Then call combine_sort function
