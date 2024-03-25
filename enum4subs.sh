@@ -205,7 +205,7 @@ function get_all_seed_domains {
           do
            python3 /opt/tools/python-permute/sub-permute.py -d "$d"  -o "$save_dir/$seed_domains/${d}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
           done
-
+      fi
       #####
       #Then call combine_sort function
       combine_sort
