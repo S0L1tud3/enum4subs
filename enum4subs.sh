@@ -354,7 +354,7 @@ function probing_subs {
   #cat "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt"
   #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
-  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -sc -title -cl -ct -t 200 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
+  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -sc -title -cl -ct -t 90 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
   result_200=$(grep "32m200" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt")
@@ -486,11 +486,26 @@ function probing_subs {
   probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
-    httpx -silent -t 200 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
+    httpx -silent -t 90 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
     echo -e "\n${b_color_green}Done!! ${normal}\n"
   else
     echo ""
   fi  
+}
+
+#Combine and Sort
+function combine_sort {
+  echo -e "${b_color_purple}-- Sorting Subdomains.!!${normal}"
+    if [ ! -d "$sorted" ]; then
+      mkdir "$sorted"
+      mkdir "$sorted/httpx"
+      mkdir "$sorted/httprobe"
+      mkdir "$sorted/httprobe/nmap"
+      cat enum4subs_*/*/*".txt" | sort -u >> "${sorted}/enum4subs_allsubs.txt"
+      echo -e "\n${b_color_green}Sorting Complete.!!${normal}\n"
+      echo -e "\n${b_color_purple}Sorted output are save in ${sorted} folder.!!${normal}\n"
+      probing_subs
+    fi
 }
 function get_all_seed_domains {
     #echo -e "${b_color_purple}-- Sorting Subdomains.!!${normal}"
@@ -521,20 +536,6 @@ function get_all_seed_domains {
       #Then call combine_sort function
       combine_sort
       
-    fi
-}
-#Combine and Sort
-function combine_sort {
-  echo -e "${b_color_purple}-- Sorting Subdomains.!!${normal}"
-    if [ ! -d "$sorted" ]; then
-      mkdir "$sorted"
-      mkdir "$sorted/httpx"
-      mkdir "$sorted/httprobe"
-      mkdir "$sorted/httprobe/nmap"
-      cat enum4subs_*/*/*".txt" | sort -u >> "${sorted}/enum4subs_allsubs.txt"
-      echo -e "\n${b_color_green}Sorting Complete.!!${normal}\n"
-      echo -e "\n${b_color_purple}Sorted output are save in ${sorted} folder.!!${normal}\n"
-      probing_subs
     fi
 }
 function list_enum {
