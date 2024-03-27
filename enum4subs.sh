@@ -505,11 +505,18 @@ function get_all_seed_domains {
       rm -rf "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
       #####
       #After getting all seed domains permutate it and save the output file to `$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt`
-      for d in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");
-          do
-           python3 /opt/tools/python-permute/sub-permute.py -d "$d"  -o "$save_dir/$seed_domains/${d}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
-          done
-     
+      # for d in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");
+      #     do
+      #      python3 /opt/tools/python-permute/sub-permute.py -d "$d"  -o "$save_dir/$seed_domains/${d}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
+      #     done
+      #####
+      #Enumarate all seed domains
+        for domain in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");do
+            curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$seed_domains/${domain}-crtsh.txt"
+            curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$seed_domains/${domain}-crtsh-02.txt"
+            subfinder -silent -d "$domain" -o "$save_dir/$seed_domains/${domain}-subfinder.txt"
+      
+        done
       #####
       #Then call combine_sort function
       combine_sort
@@ -541,7 +548,6 @@ function list_enum {
       echo -e "\n${b_color_yellow}-- Finding Subdomains for [ ${b_color_purple}${domain} ${b_color_yellow}]${normal}\n"
       curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$domain/${domain}-crtsh.txt"
       curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$domain/${domain}-crtsh-02.txt"
-      #assetfinder --subs-only "$domain" | grep -Ev " |\@|\/" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | tee "$save_dir/$domain/${domain}-assetfinder.txt"
       subfinder -all -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder.txt"
       #subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
       "/opt/tools/amass-3.23.3/amass" enum -passive  -d "$domain" -o "$save_dir/$domain/${domain}-amass.txt" -config "/opt/tools/amass-config/config.ini" -norecursive -nocolor
