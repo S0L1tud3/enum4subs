@@ -49,7 +49,7 @@ function probing_subs {
   #cat "${sorted}/httprobe/enum4subs_allsubs_httprobe.txt" | cut -d '/' -f 3 | sort -u >> "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt"
   #nmap -sV -vv -iL "${sorted}/httprobe/enum4subs_allsubs_httprobe-sorted.txt" -oA "${sorted}/httprobe/nmap"
   ##########################
-  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -sc -title -cl -ct -t 200 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
+  httpx -l "${sorted}/enum4subs_allsubs.txt" -silent -td -cname -sc -title -cl -ct -t 90 -ip -o "${sorted}/httpx/enum4subs_allsubs_httpx.txt"
   echo -e "\n${b_color_purple}-- Sorting Subdomains by Status Codes ${normal}\n"
   
   result_200=$(grep "32m200" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt")
@@ -181,7 +181,7 @@ function probing_subs {
   probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
-    httpx -silent -t 200 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
+    httpx -silent -t 90 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
     echo -e "\n${b_color_green}Done!! ${normal}\n"
   else
     echo ""
@@ -198,12 +198,21 @@ function get_all_seed_domains {
       #Read all subdomains from `enum4subs_raw_sub.txt` and get all seed domains and save it as `$save_dir/$seed_domains/enum4subs_seed_domains.txt`
       python3 /opt/tools/get-seed-domains/get-seed-domains.py -l "$save_dir/$seed_domains/enum4subs_raw_sub.txt" -o "$save_dir/$seed_domains/enum4subs_seed_domains.txt"
       rm -rf "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
+
+
+      #### Enumerate seed domains
+      for domain in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");do
+          curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$seed_domains/${domain}-crtsh.txt"
+          curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$seed_domains/${domain}-crtsh-02.txt"
+          subfinder -silent -d "$domain" -o "$save_dir/$seed_domains/${domain}-subfinder.txt"
+
+        done
       #####
       #After getting all seed domains permutate it and save the output file to `$save_dir/$seed_domains/enum4subs_seed_domains_permute.txt`
-      for d in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");
-          do
-           python3 /opt/tools/python-permute/sub-permute.py -d "$d"  -o "$save_dir/$seed_domains/${d}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
-          done
+      # for d in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");
+      #     do
+      #      python3 /opt/tools/python-permute/sub-permute.py -d "$d"  -o "$save_dir/$seed_domains/${d}-permute.txt" -l 2 -w "/opt/tools/python-permute/subdomains-tiny.txt" -t 5
+      #     done
      
       #####
       #Then call combine_sort function
