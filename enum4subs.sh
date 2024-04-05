@@ -519,6 +519,7 @@ function combine_sort {
 function get_all_seed_domains {
     #echo -e "${b_color_purple}-- Sorting Subdomains.!!${normal}"
     seed_domains="seed_domains"
+    
     if [ ! -d "$save_dir/$seed_domains" ]; then
       mkdir "$save_dir/$seed_domains"
       cat enum4subs_*/*/*".txt" | sort -u >> "$save_dir/$seed_domains/enum4subs_raw_sub.txt"
@@ -535,10 +536,11 @@ function get_all_seed_domains {
       #     done
       #####
       #Enumarate all seed domains
+      subfinder -silent -l "$save_dir/$seed_domains/enum4subs_seed_domains.txt" -o "$save_dir/$seed_domains/seeds-out-subfinder.txt"
         for domain in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");do
             curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$seed_domains/${domain}-crtsh.txt"
             curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$seed_domains/${domain}-crtsh-02.txt"
-            subfinder -silent -d "$domain" -o "$save_dir/$seed_domains/${domain}-subfinder.txt"
+            
       
         done
       #####
@@ -549,8 +551,10 @@ function get_all_seed_domains {
 }
 function list_enum {
   local file_name="$list_name"
-
+  subfinder_out="subfinder"
   if [ -f "$file_name" ]; then
+
+    subfinder -all -silent -l "$file_name" -o "$save_dir/$subfinder_out/out-subfinder.txt"
     while IFS= read -r domain; do
       if [ ! -d "$save_dir/$domain/" ]; then
         mkdir "$save_dir/$domain"
@@ -558,7 +562,7 @@ function list_enum {
       echo -e "\n${b_color_yellow}-- Finding Subdomains for [ ${b_color_purple}${domain} ${b_color_yellow}]${normal}\n"
       curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$domain/${domain}-crtsh.txt"
       curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$domain/${domain}-crtsh-02.txt"
-      subfinder -all -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder.txt"
+      
       #subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
       "/opt/tools/amass-3.23.3/amass" enum -passive  -d "$domain" -o "$save_dir/$domain/${domain}-amass.txt" -config "/opt/tools/amass-config/config.ini" -norecursive -nocolor
       #"/opt/tools/amass-3.23.3/amass" enum -brute  -d "$domain" -o "$save_dir/$domain/${domain}-amass-brute.txt" -config "/opt/tools/amass-config/config.ini" -nocolor -norecursive     
