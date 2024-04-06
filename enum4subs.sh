@@ -539,7 +539,7 @@ function get_all_seed_domains {
       #subfinder -silent -l "$save_dir/$seed_domains/enum4subs_seed_domains.txt" -o "$save_dir/$seed_domains/seeds-out-subfinder.txt"
         for domain in $(cat "$save_dir/$seed_domains/enum4subs_seed_domains.txt");do
             curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$seed_domains/${domain}-crtsh.txt"
-            sleep 0.200
+            sleep 0.300
             curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$seed_domains/${domain}-crtsh-02.txt"
             
       
@@ -564,7 +564,7 @@ function list_enum {
       fi
       echo -e "\n${b_color_yellow}-- Finding Subdomains for [ ${b_color_purple}${domain} ${b_color_yellow}]${normal}\n"
       curl -s "https://crt.sh/?q=%.$domain&output=json" | jq -r ".[].name_value" | sed "s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | grep -v "\@|\/" | sort -u | tee "$save_dir/$domain/${domain}-crtsh.txt"
-      sleep 0.200
+      sleep 0.300
       curl -s "https://crt.sh/?q=%.$domain&output=json" | grep  -E "common_name|name_value" | sed "s/\,/\n/g" | grep "common_name" | grep -Ev " |\@|\/" | sed "s/\"common_name\":\"//; s/\"//; s/\*\.//; s/https:\/\/\///; s/http:\/\/\///; s/\_//g" | sort -u | grep "$domain" | tee "$save_dir/$domain/${domain}-crtsh-02.txt"
       
       #subfinder -recursive -silent -d "$domain" -o "$save_dir/$domain/${domain}-subfinder-recursive.txt"
