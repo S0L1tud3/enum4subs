@@ -554,10 +554,10 @@ function list_enum {
   local file_name="$list_name"
   subfinder_out="subfinder"
   if [ -f "$file_name" ]; then
-    # if [ ! -d "$subfinder_out" ]; then
-    #   mkdir "$subfinder_out"
-    #   subfinder -all -silent -l "$file_name" -o "$save_dir/$subfinder_out/out-subfinder.txt"
-    # fi  
+     if [ ! -d "$subfinder_out" ]; then
+       mkdir "$subfinder_out"
+       subfinder -all -silent -l "$file_name" -o "$save_dir/$subfinder_out/out-subfinder.txt"
+  fi  
     while IFS= read -r domain; do
       if [ ! -d "$save_dir/$domain/" ]; then
         mkdir "$save_dir/$domain"
