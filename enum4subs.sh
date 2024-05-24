@@ -178,7 +178,7 @@ function probing_subs {
     echo ""
   fi 
 
-  probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
+  probe_ip_address=$(grep "[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
     httpx -silent -t 90 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
