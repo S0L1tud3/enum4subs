@@ -171,10 +171,10 @@ function probing_subs {
   fi 
 
 
-  ip_address=$(grep "[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt")
+  ip_address=$(grep "[0-9]\{3\}\.[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address ${normal}\n"
-    first_ip=$(grep -o "[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/httpx/enum4subs_allsubs_ip_address.txt")
+    first_ip=$(grep -o "[0-9]\{3\}\.[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/httpx/enum4subs_allsubs_ip_address.txt")
     #echo "${first_ip}"
   else
     echo ""
