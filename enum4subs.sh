@@ -169,16 +169,18 @@ function probing_subs {
   else
     echo ""
   fi 
-  ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt")
+
+
+  ip_address=$(grep "[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt")
   if [ -n "$ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address ${normal}\n"
-    first_ip=$(grep -o "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/httpx/enum4subs_allsubs_ip_address.txt")
+    first_ip=$(grep -o "[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_httpx.txt" | sort -u  | tee -a "${sorted}/httpx/enum4subs_allsubs_ip_address.txt")
     #echo "${first_ip}"
   else
     echo ""
   fi 
 
-  probe_ip_address=$(grep "[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
+  probe_ip_address=$(grep "[0-9]\{3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}" ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt")
   if [ -n "$probe_ip_address" ]; then
     echo -e "\n${b_color_purple}-- IP Address Info ${normal}\n"
     httpx -silent -t 90 -title -sc -cl -td -fr -probe -l ${sorted}"/httpx/enum4subs_allsubs_ip_address.txt" -o "${sorted}/httpx/enum4subs_allsubs_ip_address_probe.txt"
@@ -554,10 +556,10 @@ function list_enum {
   local file_name="$list_name"
   subfinder_out="subfinder"
   if [ -f "$file_name" ]; then
-     if [ ! -d "$subfinder_out" ]; then
-       mkdir "$subfinder_out"
-       subfinder -all -silent -l "$file_name" -o "$save_dir/$subfinder_out/out-subfinder.txt"
-  fi  
+    # if [ ! -d "$subfinder_out" ]; then
+    #   mkdir "$subfinder_out"
+    #   subfinder -all -silent -l "$file_name" -o "$save_dir/$subfinder_out/out-subfinder.txt"
+    # fi  
     while IFS= read -r domain; do
       if [ ! -d "$save_dir/$domain/" ]; then
         mkdir "$save_dir/$domain"
